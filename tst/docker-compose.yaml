@@ -1,0 +1,29 @@
+version: "3.4"
+
+services:
+  db:
+    container_name: ${DB_CONTAINER_NAME}
+    image: postgres:12
+    env_file:
+      - .env
+    restart: unless-stopped
+    volumes:
+      - triolbackend:/var/lib/postgresql/data
+    ports:
+      - ${POSTGRES_PORT}:5432
+
+  app:
+    build: ""
+    container_name: triolbackend
+    env_file:
+      - .env
+    command: bash -c "cd src && uvicorn app:app --host 0.0.0.0 --port 8000 --reload"
+    volumes:
+      - .:/src
+    environment:
+    - PYTHONUNBUFFERED=0
+    ports:
+      - "8000:8000"
+
+volumes:
+  triolbackend:
