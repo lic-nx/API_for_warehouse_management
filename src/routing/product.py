@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from starlette.requests import Request
 from starlette.responses import JSONResponse
-from schemas.orders import ProductSchema
+from tst.src.schemas.orders_items import ProductSchema
 from database.db import get_db
 from typing import List
 from repository.product import ProductRepositoriy
@@ -33,7 +33,7 @@ async def get_all_products():
     return product_schemas
 
 # Получение информации о товаре по id (GET /products/{id}).
-@router.put("/{id}", responses={
+@router.get("/{id}", responses={
     200: {"description": "Successful update"},
     404: {"description": "Product not found"},
     400: {"description": "Bad request"}

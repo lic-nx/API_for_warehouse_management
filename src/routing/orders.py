@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Query
 from starlette.requests import Request
 from starlette.responses import JSONResponse
-from schemas.orders import PostOrdersRequestSchema, GetOrdersRequestSchema
+from tst.src.schemas.orders_items import PostOrdersRequestSchema, GetOrdersRequestSchema
 from database.db import get_db
 from typing import List
 from repository.orders import OrdersRepositoriy
@@ -29,7 +29,8 @@ async def create_order(request:PostOrdersRequestSchema):
 async def get_all_orders(): 
     service = OrdersRepositoriy(get_db)
     response = service.get_all_orders()
-    return response
+    product_schemas = [GetOrdersRequestSchema.from_orm(order) for order in response]
+    return product_schemas
 
 
 # получить запись по заказу с id 
@@ -46,12 +47,12 @@ async def get_orders_on_id(id):
 @router.patch("/{id}/status",
               responses={400: {"description": "error"}},
     description="обновление статуса заказа")
-async def update_status(id, status: str= Query(...)): 
-        if status not in OrderStatus.__members__.values():
+async def update_status(id, status: OrderStatus = Query(...)): 
+        if status not in OrderStatus:
             return HTTPException(status_code=400, detail="Invalid status")
 
         # Преобразование строки в элемент перечисления
         status_enum = OrderStatus(status)
         service = OrdersRepositoriy(get_db)
-        response = service.update_status(id, status_enum)
+        response = service.update_status(id, status)
         return response

@@ -39,8 +39,8 @@ class GetOrdersRequestSchema(BaseModel):
     id:int # id заказа
     created_at:datetime # дата создания заказа
     status:str # статус заказа
-    orderInfo: PostOrdersRequestSchema
-    product:ProductSchema
+    orderInfo: Optional[PostOrdersRequestSchema]
+    product:Optional[ProductSchema]
     class Config:
         orm_mode = True
         allow_population_by_field_name = True

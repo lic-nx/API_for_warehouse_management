@@ -29,7 +29,6 @@ class OrderStatus(str, enum.Enum):
     SHIPPED = "отправлен"
     DELIVERED = "доставлен"
     FAIL = "провалено"
-    TEST = "test"
     
 # Определяем модель Product
 class Product(Base):

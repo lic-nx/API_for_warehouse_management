@@ -1,6 +1,6 @@
 from typing import List
 from database.models.product import *
-from schemas.orders import ProductSchema 
+from tst.src.schemas.orders_items import ProductSchema 
 from sqlalchemy.future import select
 from sqlalchemy import and_, func, insert, update, join, delete, text
 from sqlalchemy.orm import joinedload
